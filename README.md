@@ -25,7 +25,8 @@ Combines retrieval methods with language models to generate answers grounded in 
 ### 7. Text-to-Query  
 Transforms natural language questions into structured queries for knowledge graphs, enabling automated data access.
 
-### 8. Not determinated yet ...
+### 8. TBD  
+Project not determined yet.
 
 ## Final Project  
 A self-defined NLP application that integrates multiple components from the previous projects to address a specific problem.
