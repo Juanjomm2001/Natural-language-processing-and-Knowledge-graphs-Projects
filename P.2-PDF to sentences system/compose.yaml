@@ -1,0 +1,17 @@
+services:
+  web-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      # GROBID_URL establece dónde nuestro main.py va asíncronamente a buscar a GROBID
+      # internamente docker referenciará "grobid" a la IP de su contenedor hermano
+      - GROBID_URL=http://grobid:8070
+    depends_on:
+      - grobid
+
+  grobid:
+    # GROBID es inmenso y tiene una imagen oficial lista para usar
+    image: lfoppiano/grobid:0.8.1
+    ports:
+      - "8070:8070"
