@@ -1,6 +1,6 @@
 # P.3 – Text to Persons (LLM NER)
 
-REST API que extrae nombres de personas de un texto usando un LLM de CampusAI DTU.
+REST API that extracts person names from a given text using the CampusAI DTU LLM.
 
 ## Endpoint
 
@@ -10,22 +10,22 @@ Content-Type: application/json
 {"text": "Einstein and von Neumann meet each other."}
 ```
 
-**Respuesta:**
+**Response:**
 ```json
 {"persons": ["Einstein", "von Neumann"]}
 ```
 
-## Ejecución en Desarrollo (Local)
+## Development Execution (Local)
 
-Arranca el servidor usando el modelo de prueba de Gemini:
+Start the server using the Gemini test model:
 
 ```bash
 python -m uvicorn app_gemini:app --reload --port 8000
 ```
 
-Swagger UI interactivo disponible en → `http://127.0.0.1:8000/docs`
+Interactive Swagger UI available at → `http://127.0.0.1:8000/docs`
 
-## Ejecución con Docker (Producción)
+## Execution with Docker (Production)
 
 ```bash
 docker build -t text-to-persons:latest .
@@ -34,20 +34,22 @@ docker run --rm -p 8000:8000 --env-file ~/.env text-to-persons:latest
 
 ## Tests
 
-Para pasar los tests integrados:
+To run the integration tests:
 
 ```bash
 python -m pytest test_app.py -v
 ```
 
-Crea un archivo `.env` local en la carpeta (nunca lo subas a Git). Para funcionar, necesitas al menos tu clave de pruebas de Google Gemini:
+## Configuration
+
+Create a local `.env` file in the folder (never commit it to Git). To run the application, you need at least your Google Gemini test key:
 
 ```env
-GEMINI_API_KEY=tu_clave_gemini_aqui
-CAMPUSAI_API_KEY=tu_clave_campusai_aqui
+GEMINI_API_KEY=your_gemini_key_here
+CAMPUSAI_API_KEY=your_campusai_key_here
 ```
 
-## Entrega
+## Submission
 
 ```bash
 git archive -o latest.zip HEAD
