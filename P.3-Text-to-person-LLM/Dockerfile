@@ -22,5 +22,4 @@ COPY app.py app_gemini.py ./
 EXPOSE 8000
 
 # Arranca directamente app_gemini para que pruebes. 
-# PARA LA ENTREGA: cambia app_gemini:app por app:app
 CMD ["uvicorn", "app_gemini:app", "--host", "0.0.0.0", "--port", "8000"]

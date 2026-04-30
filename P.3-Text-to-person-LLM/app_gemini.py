@@ -1,9 +1,6 @@
 """
 app_gemini.py — Text-to-Persons API (versión Gemini)
 
-Idéntico a app.py pero usando la API de Google Gemini en vez de CampusAI.
-Útil para probar mientras no tienes la clave de CampusAI.
-
 Requiere en tu .env:
     GEMINI_API_KEY=tu_clave_de_gemini
 
@@ -46,8 +43,7 @@ class ExtractResponse(BaseModel):
 # ─── Lógica principal ─────────────────────────────────────────────────────────
 def campusai_extract_persons(text: str) -> list[str]:
     """
-    Misma función que en app.py pero usando Gemini.
-    El nombre se mantiene igual para que test_app.py funcione sin cambios.
+ 
     """
     if not GEMINI_API_KEY:
         raise RuntimeError("GEMINI_API_KEY no está definida en el entorno.")
@@ -111,8 +107,8 @@ Output:"""
         )
 
 # ─── Endpoint ─────────────────────────────────────────────────────────────────
-@app.post("/v1/extract-persons", response_model=ExtractResponse)
-def extract_persons(request: ExtractRequest) -> ExtractResponse:
+@app.post("/v1/extract-persons", response_model=ExtractResponse)  #respuesta
+def extract_persons(request: ExtractRequest) -> ExtractResponse:  #peticion-> respuesta
     persons = campusai_extract_persons(request.text)
     return ExtractResponse(persons=persons)
 

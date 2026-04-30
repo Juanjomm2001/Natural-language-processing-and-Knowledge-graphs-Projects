@@ -29,7 +29,7 @@ from pydantic import BaseModel
 # It is NEVER hardcoded. It comes from the ~/.env file passed via --env-file.
 CAMPUSAI_API_KEY = os.environ.get("CAMPUSAI_API_KEY")
 CAMPUSAI_BASE_URL = "https://api.campusai.compute.dtu.dk/v1"
-MODEL = "Qwen3.5 35B"  # The primary model available on CampusAI
+MODEL = "Qwen3.6 35B MoE"  # The primary model available on CampusAI
 
 # ─── FastAPI App ───────────────────────────────────────────────────────────────
 # FastAPI automatically generates an interactive Swagger UI at /docs
