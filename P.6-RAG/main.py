@@ -99,5 +99,3 @@ def ask_question(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to process the question: {str(e)}")
 
-# You can run this locally with:
-# uvicorn main:app --reload

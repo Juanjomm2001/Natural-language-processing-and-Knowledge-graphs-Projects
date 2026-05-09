@@ -1,0 +1,39 @@
+# ── Secrets / Environment variables ──────────────────────────────────────────
+# Never commit real API keys or credentials.
+.env
+*.env
+!*.env.example       # .env.example can be committed (no real keys inside)
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+ENV/
+
+# ── Pytest / Coverage ─────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ── IDE / OS ──────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# ── Datasets (P.6-RAG) ────────────────────────────────────────────────────────
+*.jsonl
+*.warc.gz
+*.nt
+

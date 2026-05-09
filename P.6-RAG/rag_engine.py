@@ -180,8 +180,8 @@ class RAGEngine:
             lm = dspy.settings.lm
             response = lm(prompt)
             # Depending on the DSPy version/backend, it might return a list or a string
-            answer = response[0] if isinstance(response, list) else str(response)
-            return answer.strip()
+            answer = response[0] if isinstance(response, list) else response
+            return str(answer).strip()
         except Exception as e:
             print(f"Error during LLM generation: {e}")
             return "Sorry, there was an issue generating the answer."
