@@ -134,9 +134,10 @@ class CosechadosHybridAgent:
         history_str = "\n".join([f"{m['role']}: {m['content']}" for m in history]) if history else "None"
 
         answer_prompt = (
-            f"You are an assistant for Cosechados. Your tone must be 'campechano' (rural, extremely warm, friendly, and close, as if you are a nice farmer from a Spanish village talking to a neighbor). "
+            f"You are a helpful and warm assistant for Cosechados. "
             f"Keep your response concise and direct to the point. "
-            f"Answer ONLY from the context below. Reply in the same language the user used.\n\n"
+            f"CRITICAL INSTRUCTION: You MUST reply in the EXACT SAME LANGUAGE that the user used in their Question. IF IN DOUBT, REPLY IN ENGLISH. Never reply in Spanish if the question is in English. Adapt your warm tone to the language you are speaking.\n\n"
+            f"Answer ONLY from the context below.\n\n"
             f"Chat History:\n{history_str}\n\n"
             f"Context:\n{context}\n\nQuestion: {query}"
         )
@@ -190,15 +191,15 @@ class CosechadosHybridAgent:
         history_str = "\n".join([f"{m['role']}: {m['content']}" for m in history]) if history else "None"
 
         answer_prompt = (
-            f"You are an assistant for Cosechados. Your tone must be 'campechano' (rural, warm, friendly, and close, as if you are a nice farmer from a Spanish village talking to a neighbor).\n"
+            f"You are a helpful and warm assistant for Cosechados.\n"
             f"Keep your response concise and direct to the point.\n"
+            f"CRITICAL INSTRUCTION: You MUST reply in the EXACT SAME LANGUAGE that the user used in their Question. IF IN DOUBT, REPLY IN ENGLISH. Never reply in Spanish if the question is in English. Adapt your warm tone to the language you are speaking.\n\n"
             f"Use the following database results to answer the user's question.\n"
             f"If the user asks for a budget or calculation, do the math explicitly step by step.\n\n"
             f"Chat History:\n{history_str}\n\n"
             f"Database Results:\n"
             f"{chr(10).join(all_results)}\n\n"
-            f"User Question: {original_query}\n\n"
-            f"Reply in the same language the user used."
+            f"User Question: {original_query}"
         )
         response = self.llm.invoke(answer_prompt)
 
@@ -213,7 +214,9 @@ class CosechadosHybridAgent:
 
         if tool == "inventory":
             products = route.get("products", [])
-            return self._search_inventory(products, query, history)
+            result = self._search_inventory(products, query, history)
+            result["tool_used"] = "inventory"
+            return result
 
         elif tool == "both":
             products = route.get("products", [])
@@ -225,11 +228,11 @@ class CosechadosHybridAgent:
             history_str = "\n".join([f"{m['role']}: {m['content']}" for m in history]) if history else "None"
 
             combined_prompt = (
-                f"You are an assistant for Cosechados. Your tone must be 'campechano' (rural, extremely warm, friendly, and close, as if you are a nice farmer from a Spanish village talking to a neighbor).\n"
+                f"You are a helpful and warm assistant for Cosechados.\n"
                 f"Keep your response concise and direct to the point.\n"
+                f"CRITICAL INSTRUCTION: You MUST reply in the EXACT SAME LANGUAGE that the user used in their Question. IF IN DOUBT, REPLY IN ENGLISH. Never reply in Spanish if the question is in English. Adapt your warm tone to the language you are speaking.\n\n"
                 f"Combine these two pieces of information into ONE coherent answer. "
-                f"If there is any math required, do it explicitly.\n"
-                f"Reply in the same language the user used.\n\n"
+                f"If there is any math required, do it explicitly.\n\n"
                 f"Chat History:\n{history_str}\n\n"
                 f"From documents:\n{rag_result['answer']}\n\n"
                 f"From inventory:\n{inv_result['answer']}\n\n"
@@ -240,8 +243,11 @@ class CosechadosHybridAgent:
             return {
                 "answer": response.content,
                 "citations": rag_result["citations"] + inv_result["citations"],
-                "sources": rag_result["sources"] + inv_result["sources"]
+                "sources": rag_result["sources"] + inv_result["sources"],
+                "tool_used": "both"
             }
 
         else:
-            return self._search_rag(query, history)
+            result = self._search_rag(query, history)
+            result["tool_used"] = "rag"
+            return result

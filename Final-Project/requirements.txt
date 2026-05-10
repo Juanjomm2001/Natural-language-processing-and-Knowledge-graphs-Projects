@@ -9,3 +9,6 @@ python-dotenv
 pydantic
 streamlit
 pymupdf
+pytest
+pytest-mock
+httpx
